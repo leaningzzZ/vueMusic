@@ -2,13 +2,9 @@
   <div id="app">
     <my-header></my-header>
     <my-tab></my-tab>
-    <router-view/>
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/> -->
-
+    <keep-alive><!-- 避免导航切换重复发送请求 -->
+        <router-view/>
+    </keep-alive>
   </div>
 </template>
 <script>

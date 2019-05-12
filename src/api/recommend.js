@@ -10,3 +10,19 @@ export function getRecommend() {
     console.log(jsonp(url, data, options))
     return jsonp(url, data, options)
 }
+// export function getDiscList(){//获取歌单数据
+//     // const url ="https://c.y.qq.com/splcloud/fcgi-bin/fxg_get_diss_by_tag.fcg"
+//     const url="https://u.y.qq.com/cgi-bin/musicu.fcg"
+//     const data = Object.assign({}, commonParams, {
+//         platform: "yqq.json",notice:0,
+//         hostUin: 0,
+//         sin:0,
+//         ein:29,
+//         sortId:5,
+//         needNewCode: 0,
+//         categoryId:10000000,
+//         rnd:Math.random()
+        
+//     })
+//     return jsonp(url, data, options)
+// }

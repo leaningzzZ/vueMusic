@@ -13,4 +13,4 @@ export const options={
     param:"jsonpCallback"
 }
 export const ERR_OK=0
-//为了与QQ音乐接口信息一致
+//为了与QQ音乐接口信息一致a

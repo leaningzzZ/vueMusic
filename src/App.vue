@@ -1,13 +1,26 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <my-header></my-header>
+    <my-tab></my-tab>
+    <router-view/>
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <router-view/> -->
+
   </div>
 </template>
-
+<script>
+import MyHeader from "./components/header/header"
+import MyTab from "./components/tab/tab"
+export default {
+  components:{
+    MyHeader,
+    MyTab
+  }
+}
+</script>
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -15,6 +28,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background:rgba(0, 0, 0, 0.5)
 }
 #nav {
   padding: 30px;

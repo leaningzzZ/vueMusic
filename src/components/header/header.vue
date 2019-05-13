@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        vue-music
+        vue-Music
     </div>
 </template>
 <script>
@@ -10,8 +10,10 @@ export default {
 </script>
 <style>
 .container{
-    height: 8vh;
-    font-size:24px;
-    line-height: 8vh
+    /* background-color: #31c27c; */
+    height: 4vh;
+    font-size:18px;
+    line-height:4vh;
+    
 }
 </style>

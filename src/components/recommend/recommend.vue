@@ -10,23 +10,18 @@
       </swiper>
     </div>
     <div class="title">热门歌单推荐</div>
-    <div class="clear"></div>
-    <div class="songList" v-loading="loading">
-      <ul v-if="recommendData.slider.length>0">
-        <li
-          v-for="item in recommendData.songList.data"
-          :key="item.id"
-          @click="goSongListDetail(item.id)"
-        >
-          <div class="listLeft">
-            <img :src="item.pic" alt>
-          </div>
-          <div class="listRight">
-            <p class="listTitle">{{item.name}}</p>
-            <p class="playCount">{{item.playCount}}次播放</p>
-            <span class="creator">{{item.creator}}</span>
-            <span class="createTime">{{item.createTime}}</span>
-          </div>
+    <div class="songList" v-if="recommendData.slider.length>0">
+      <ul>
+        <li v-for="item in recommendData.songList.data" :key="item.id" @click="getSongListDetail(item.id)">
+            <div class="listLeft">
+              <img :src="item.pic" alt="">
+            </div>
+            <div class="listRight">
+              <p class="listTitle">{{item.name}}</p>
+              <p class="playCount">{{item.playCount}}次播放</p>
+              <span class="creator">{{item.creator}}</span>
+              <span class="createTime">{{item.createTime}}</span>
+            </div>
         </li>
       </ul>
     </div>
@@ -85,16 +80,13 @@ export default {
 .swiper {
   height: 23vh;
 }
-.title {
-  color: black;
-  font-size: 24px;
-  font-weight: 500;
-  padding-bottom: 3vh;
-  margin-top: 3vh;
-  border-bottom: 1px solid black;
-}
-.clear {
-  clear: both;
+.title{
+  /* background-color: #31c27c; */
+  color:black;
+  font-size: 17px;
+  text-align: left;
+  padding-left: 10px;
+  border-left: 1px red solid 
 }
 .songList ul {
   list-style: none;

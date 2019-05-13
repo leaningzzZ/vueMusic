@@ -13,14 +13,18 @@
     <div class="songList" v-if="recommendData.slider.length>0">
       <ul>
         <li v-for="item in recommendData.songList.data" :key="item.id" @click="getSongListDetail(item.id)">
-            <div class="listLeft">
-              <img :src="item.pic" alt="">
-            </div>
-            <div class="listRight">
-              <p class="listTitle">{{item.name}}</p>
-              <p class="playCount">{{item.playCount}}次播放</p>
-              <span class="creator">{{item.creator}}</span>
-              <span class="createTime">{{item.createTime}}</span>
+            <div class="listItem">
+              <div class="listPic">
+                <img :src="item.pic" alt="">
+              </div>
+                <p class="listTitle">{{item.name}}</p>
+                <div class="playCount">
+                  
+                  <p class="playCountNum">
+                    <i class="el-icon-service"></i>
+                    {{item.playCount}}
+                  </p>
+                </div>
             </div>
         </li>
       </ul>
@@ -81,7 +85,6 @@ export default {
   height: 23vh;
 }
 .title{
-  /* background-color: #31c27c; */
   color:black;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -90,49 +93,51 @@ export default {
   padding-left: 10px;
   border-left: 1.5px #31c27c solid 
 }
+.songList{
+  width: 100%;
+}
 .songList ul {
+  width: 100%;
   list-style: none;
-  display: inline;
+  display: inline-block;
   margin: 0;
   padding: 0;
 }
 .songList ul li {
+  padding-left: 0.6%;
+  padding-right: 0.6%;
+  width: 32%;
   text-align: left;
+  float: left;
+  display: inline;
+  padding-bottom: 20px;
 }
-.listLeft {
-  width: 35%;
-  display: inline-block;
-}
-.listLeft img {
-  height: 15vh;
-  width: 15vh;
-  margin-left: 4vw;
-  margin-top: 3vh;
-  margin-bottom: 3vh;
-}
-.listRight {
-  vertical-align: top;
-  margin-top: 3vh;
-  height: 15vh;
-  width: 65%;
-  display: inline-block;
+
+.listItem{
   position: relative;
+  width: 100%;
 }
-.listRight p {
+
+.listItem p{
   margin: 0;
-  padding: 0;
-  word-break: normal;
-  text-overflow: ellipsis;
+  font-size: 12px;
 }
-.listRight .listTitle {
-  font-size: 20px;
-  color: black;
-  padding-bottom: 2vh;
+.listPic {
+  width: 100%;
+  display: inline-block;
 }
-.listRight .playCount {
-  font-size: 16px;
-  color: #ffff77;
+.listPic img {
+  height: 100%;
+  width: 100%;
 }
+
+.playCount{
+  position: absolute;
+  right:5px;
+  top:5px;
+  color:#FFFFFF;
+}
+
 .creator,
 .createTime {
   position: absolute;

@@ -2,9 +2,9 @@
   <div id="app">
     <my-header></my-header>
     <my-tab></my-tab>
-    <keep-alive><!-- 避免导航切换重复发送请求 -->
+    <!-- <keep-alive>避免导航切换重复发送请求 -->
         <router-view/>
-    </keep-alive>
+    <!-- </keep-alive> -->
   </div>
 </template>
 <script>
@@ -30,6 +30,7 @@ body{
   text-align: center;
   color: #2c3e50;
   background:#ffffff;
+  min-width: 370px;
 }
 #nav {
   padding: 30px;

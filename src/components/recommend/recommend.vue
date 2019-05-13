@@ -12,7 +12,7 @@
     <div class="title">热门歌单推荐</div>
     <div class="songList" v-if="recommendData.slider.length>0">
       <ul>
-        <li v-for="item in recommendData.songList.data" :key="item.id" @click="getSongListDetail(item.id)">
+        <li v-for="item in recommendData.songList.data" :key="item.id" @click="goSongListDetail(item.id,item.playCount)">
             <div class="listItem">
               <div class="listPic">
                 <img :src="item.pic" alt="">
@@ -60,8 +60,8 @@ export default {
           this.listLoading = false;
         });
     },
-    goSongListDetail(id) {
-      this.$router.push({name: 'songListDetail', params: {id:id}})
+    goSongListDetail(id,playCount) {
+      this.$router.push({name: 'songListDetail', params: {id:id,playCount:playCount}})
     }
   },
   data() {

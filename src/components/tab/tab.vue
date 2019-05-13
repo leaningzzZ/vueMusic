@@ -23,13 +23,17 @@ export default {
 <style>
 .tabs{
     display: flex
+
 }
 .tab-item{
+    color:#919191;
     flex-grow:1;
-    height: 5vh;
+    height: 4vh;
+    line-height: 4vh;
 }
+
 .active{
-    color:black;
-    border-bottom:2px solid white
+    color:#31c27c;
+    border-bottom: 2px solid #32c27c;
 }
 </style>

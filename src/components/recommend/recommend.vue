@@ -11,18 +11,22 @@
     </div>
     <div class="title">热门歌单推荐</div>
     <div class="clear"></div>
-    <div class="songList" v-if="recommendData.slider.length>0">
-      <ul>
-        <li v-for="item in recommendData.songList.data" :key="item.id" @click="getSongListDetail(item.id)">
-            <div class="listLeft">
-              <img :src="item.pic" alt="">
-            </div>
-            <div class="listRight">
-              <p class="listTitle">{{item.name}}</p>
-              <p class="playCount">{{item.playCount}}次播放</p>
-              <span class="creator">{{item.creator}}</span>
-              <span class="createTime">{{item.createTime}}</span>
-            </div>
+    <div class="songList" v-loading="loading">
+      <ul v-if="recommendData.slider.length>0">
+        <li
+          v-for="item in recommendData.songList.data"
+          :key="item.id"
+          @click="goSongListDetail(item.id)"
+        >
+          <div class="listLeft">
+            <img :src="item.pic" alt>
+          </div>
+          <div class="listRight">
+            <p class="listTitle">{{item.name}}</p>
+            <p class="playCount">{{item.playCount}}次播放</p>
+            <span class="creator">{{item.creator}}</span>
+            <span class="createTime">{{item.createTime}}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -31,30 +35,34 @@
 <script>
 import { getRecommend } from "../../api/recommend.js";
 import { ERR_OK } from "../../api/config.js";
-import {api} from "../../api/http.js"
 export default {
   created() {
-    console.log(1);
-    this.loading = true;
+    this.swiperLoading = false;
+    this.listLoading = false;
     this._getRecommend();
-    // this._getDiscList()
-    console.log(api)
+    this.getSongList();
   },
   methods: {
     _getRecommend() {
+      this.swiperLoading = true;
       getRecommend().then(res => {
-        this.recommendData = res.data;
-        console.log(this.recommendData);
-        this.loading = false;
-        api.get("music/tencent/hotSongList?key=579621905&categoryId=10000000&sortId=3&limit=10").then((res)=>{
-          this.recommendData.songList=res.data
-        })
+        this.recommendData.slider = res.data.slider;
+        this.swiperLoading = false;
       });
     },
-    getSongListDetail(id){
-      api.get(`music/tencent/songList?key=579621905&id=${id}`).then(res=>{
-        console.log(res)
-      })
+    getSongList() {
+      this.listLoading = true;
+      this.$api
+        .get(
+          "music/tencent/hotSongList?key=579621905&categoryId=10000000&sortId=3&limit=10"
+        )
+        .then(res => {
+          this.recommendData.songList = res.data;
+          this.listLoading = false;
+        });
+    },
+    goSongListDetail(id) {
+      this.$router.push({name: 'songListDetail', params: {id:id}})
     }
   },
   data() {
@@ -69,46 +77,46 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .swiper-slide img {
   width: 100%;
   height: 100%;
 }
-.swiper{
+.swiper {
   height: 23vh;
 }
-.title{
-  color:black;
+.title {
+  color: black;
   font-size: 24px;
   font-weight: 500;
   padding-bottom: 3vh;
   margin-top: 3vh;
-  border-bottom: 1px solid black
+  border-bottom: 1px solid black;
 }
-.clear{
-  clear:both
+.clear {
+  clear: both;
 }
-.songList ul{
-  list-style:none;
-  display: inline; 
-  margin:0;
-  padding:0;
+.songList ul {
+  list-style: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
 }
-.songList ul li{
+.songList ul li {
   text-align: left;
 }
-.listLeft{
-  width:35%;
+.listLeft {
+  width: 35%;
   display: inline-block;
 }
-.listLeft img{
+.listLeft img {
   height: 15vh;
   width: 15vh;
   margin-left: 4vw;
   margin-top: 3vh;
-  margin-bottom: 3vh
+  margin-bottom: 3vh;
 }
-.listRight{
+.listRight {
   vertical-align: top;
   margin-top: 3vh;
   height: 15vh;
@@ -116,29 +124,30 @@ export default {
   display: inline-block;
   position: relative;
 }
-.listRight p{
+.listRight p {
   margin: 0;
   padding: 0;
-  word-break:normal;
-  text-overflow:ellipsis;
+  word-break: normal;
+  text-overflow: ellipsis;
 }
- .listRight .listTitle{
+.listRight .listTitle {
   font-size: 20px;
   color: black;
   padding-bottom: 2vh;
 }
- .listRight .playCount{
+.listRight .playCount {
   font-size: 16px;
-  color: #ffff77
+  color: #ffff77;
 }
-.creator,.createTime{
-  position:absolute;
+.creator,
+.createTime {
+  position: absolute;
   bottom: 0;
 }
-.createTime{
+.createTime {
   right: 3vw;
 }
-.creator{
-  left: 0
+.creator {
+  left: 0;
 }
 </style>

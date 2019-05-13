@@ -83,10 +83,12 @@ export default {
 .title{
   /* background-color: #31c27c; */
   color:black;
+  margin-top: 5px;
+  margin-bottom: 5px;
   font-size: 17px;
   text-align: left;
   padding-left: 10px;
-  border-left: 1px red solid 
+  border-left: 1.5px #31c27c solid 
 }
 .songList ul {
   list-style: none;

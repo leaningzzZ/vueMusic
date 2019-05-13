@@ -10,13 +10,19 @@
       </swiper>
     </div>
     <div class="title">热门歌单推荐</div>
+    <div class="clear"></div>
     <div class="songList" v-if="recommendData.slider.length>0">
       <ul>
-        <li v-for="item in recommendData.songList.data" :key="item.id">
-            <img :src="item.pic" alt="">
-            <p class="listTitle">{{item.name}}</p>
-            <p class="playCount">{{item.playCount}}次播放</p>
-            <p class="creator">{{item.creator}}</p>
+        <li v-for="item in recommendData.songList.data" :key="item.id" @click="getSongListDetail(item.id)">
+            <div class="listLeft">
+              <img :src="item.pic" alt="">
+            </div>
+            <div class="listRight">
+              <p class="listTitle">{{item.name}}</p>
+              <p class="playCount">{{item.playCount}}次播放</p>
+              <span class="creator">{{item.creator}}</span>
+              <span class="createTime">{{item.createTime}}</span>
+            </div>
         </li>
       </ul>
     </div>
@@ -44,6 +50,11 @@ export default {
           this.recommendData.songList=res.data
         })
       });
+    },
+    getSongListDetail(id){
+      api.get(`music/tencent/songList?key=579621905&id=${id}`).then(res=>{
+        console.log(res)
+      })
     }
   },
   data() {
@@ -70,7 +81,12 @@ export default {
   color:black;
   font-size: 24px;
   font-weight: 500;
-  padding-bottom: 3vh
+  padding-bottom: 3vh;
+  margin-top: 3vh;
+  border-bottom: 1px solid black
+}
+.clear{
+  clear:both
 }
 .songList ul{
   list-style:none;
@@ -79,22 +95,50 @@ export default {
   padding:0;
 }
 .songList ul li{
-  border:1px solid black;
-  text-align: left
+  text-align: left;
 }
-.songList ul li img{
+.listLeft{
+  width:35%;
+  display: inline-block;
+}
+.listLeft img{
   height: 15vh;
   width: 15vh;
-  display: inline-block;
+  margin-left: 4vw;
   margin-top: 3vh;
-  margin-bottom: 3vh;
-  margin-left: 3vw
+  margin-bottom: 3vh
 }
-.songList ul li p{
-  margin:0;
-  padding:0;
+.listRight{
+  vertical-align: top;
+  margin-top: 3vh;
+  height: 15vh;
+  width: 65%;
+  display: inline-block;
+  position: relative;
 }
-.listTitle{
-  /* display:inline-block */
+.listRight p{
+  margin: 0;
+  padding: 0;
+  word-break:normal;
+  text-overflow:ellipsis;
+}
+ .listRight .listTitle{
+  font-size: 20px;
+  color: black;
+  padding-bottom: 2vh;
+}
+ .listRight .playCount{
+  font-size: 16px;
+  color: #ffff77
+}
+.creator,.createTime{
+  position:absolute;
+  bottom: 0;
+}
+.createTime{
+  right: 3vw;
+}
+.creator{
+  left: 0
 }
 </style>

@@ -11,9 +11,8 @@ export default {
 <style>
 .container{
     /* background-color: #31c27c; */
-    height: 4vh;
-    font-size:18px;
-    line-height:4vh;
-    
+    height: 5vh;
+    font-size:25px;
+    line-height:5vh;
 }
 </style>

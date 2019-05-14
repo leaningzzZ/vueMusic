@@ -19,7 +19,6 @@
               </div>
                 <p class="listTitle">{{item.name}}</p>
                 <div class="playCount">
-                  
                   <p class="playCountNum">
                     <i class="el-icon-service"></i>
                     {{item.playCount}}
@@ -53,7 +52,7 @@ export default {
       this.listLoading = true;
       this.$api
         .get(
-          "music/tencent/hotSongList?key=579621905&categoryId=10000000&sortId=3&limit=10"
+          "music/tencent/hotSongList?key=579621905&categoryId=10000000&sortId=3&limit=20"
         )
         .then(res => {
           this.recommendData.songList = res.data;
@@ -61,7 +60,10 @@ export default {
         });
     },
     goSongListDetail(id,playCount) {
-      this.$router.push({name: 'songListDetail', params: {id:id,playCount:playCount}})
+      let storage=window.localStorage;
+      storage.listId=id;
+      storage.playCount=playCount;//修复歌单列表刷新报错，通过采用localStorage传值
+      this.$router.push({name: 'songListDetail'})
     }
   },
   data() {

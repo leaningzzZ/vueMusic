@@ -12,16 +12,16 @@
     <div class="title">热门歌单推荐</div>
     <div class="songList" v-if="recommendData.slider.length>0">
       <ul>
-        <li v-for="item in recommendData.songList.data" :key="item.id" @click="goSongListDetail(item.id,item.playCount)">
+        <li v-for="item in recommendData.songList" :key="item.dissid" @click="goSongListDetail(item.dissid,item.listennum)">
             <div class="listItem">
               <div class="listPic">
-                <img :src="item.pic" alt="">
+                <img :src="item.imgurl" alt="">
               </div>
-                <p class="listTitle">{{item.name}}</p>
-                <div class="playCount">
-                  <p class="playCountNum">
+                <p class="listTitle">{{item.dissname}}</p>
+                <div class="listennum">
+                  <p>
                     <i class="el-icon-service"></i>
-                    {{item.playCount}}
+                    {{item.listennum}}
                   </p>
                 </div>
             </div>
@@ -52,17 +52,18 @@ export default {
       this.listLoading = true;
       this.$api
         .get(
-          "music/tencent/hotSongList?key=579621905&categoryId=10000000&sortId=3&limit=20"
+          "tencent/songList/hot?cat=全部&pageSize=100&page=0"
         )
         .then(res => {
-          this.recommendData.songList = res.data;
+          console.log(res.data)
+          this.recommendData.songList = res.data.data.list;
           this.listLoading = false;
         });
     },
-    goSongListDetail(id,playCount) {
+    goSongListDetail(dissid,listennum) {
       let storage=window.localStorage;
-      storage.listId=id;
-      storage.playCount=playCount;//修复歌单列表刷新报错，通过采用localStorage传值
+      storage.listId=dissid;
+      storage.listennum=listennum;//修复歌单列表刷新报错，通过采用localStorage传值
       this.$router.push({name: 'songListDetail'})
     }
   },
@@ -133,7 +134,7 @@ export default {
   width: 100%;
 }
 
-.playCount{
+.listennum{
   position: absolute;
   right:5px;
   top:5px;

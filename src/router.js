@@ -5,6 +5,7 @@ import singer from "./components/singer/singer"
 import search from "./components/search/search"
 import rank from "./components/rank/rank"
 import songListDetail from "./components/songListDetail"
+import player from "./components/player/player"
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +40,11 @@ export default new Router({
       path:"/listDetail",
       name:"songListDetail",
       component:songListDetail
+    },
+    {
+      path:"/player",
+      name:"player",
+      component:player
     }
     
   ]

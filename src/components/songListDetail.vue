@@ -19,7 +19,7 @@
       </div>
       <div class="list">
         <ul>
-          <li v-for="(item,index) in listData.songlist" :key="item.id" @click="play(item.id)">
+          <li v-for="(item,index) in listData.songlist" :key="item.id" @click="play(item.mid)">
             <div class="songIndex">{{index+1}}</div>
             <div class="songInfo">
               <h4 class="songName">{{item.name}}</h4>
@@ -60,8 +60,8 @@ export default {
     };
   },
   methods: {
-    play(id) {
-      this.$router.push({ name: "player", params: { id: id } });
+    play(mid) {
+      this.$router.push({ name: "player", params: { mid: mid } });
     }
   }
 };

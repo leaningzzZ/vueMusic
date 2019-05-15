@@ -31,8 +31,9 @@ export default{
               "tencent/artist/list?page=0&pageSize=30"
             )
             .then(res => {
-                this.singerData.singerList = res.data;
+                this.singerData.singerList = res.data.data;
                 this.listLoading = false;
+                console.log(this.singerData.singerList)
             });
         }
     },

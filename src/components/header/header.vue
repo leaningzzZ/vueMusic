@@ -8,7 +8,7 @@ export default {
     
 }
 </script>
-<style>
+<style scoped>
 .container{
     /* background-color: #31c27c; */
     height: 5vh;

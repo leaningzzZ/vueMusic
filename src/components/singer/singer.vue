@@ -5,9 +5,9 @@
         </div> -->
         <div class="singerList">
             <ul>
-                <li v-for="item in singerData.singerList" :key="item.id">
-                    <div class="singerListItem">
-                        <div class="singerListPic">
+                <li v-for="item in singerData.singerList" :key="item.id"   v-on:click="singerListClicked(($event))">
+                    <div class="singerListItem" >
+                        <div class="singerListPic" >
                             <img :src="item.singer_pic" alt="">
                         </div>
                         <div class="listSingerName">
@@ -42,8 +42,13 @@ export default{
                 this.listLoading = false;
                 console.log(this.singerData.singerList)
             });
+        },
+        singerListClicked: function(event){
+            var el = event.currentTarget;
+            el.style.backgroundColor="red";
         }
     },
+    
     data(){
         return {
             singerData:{
@@ -57,10 +62,12 @@ export default{
 </script>
 
 <style>
-
 .singerListItem{
     border-bottom: 0.5px #00000066 solid;
+    position: relative;
+    height: 50px;
 }
+
 .singerList ul{
     list-style: none;
     margin: 0;
@@ -70,6 +77,8 @@ export default{
 .singerList ul li{
     height: 50px;
 }
+
+
 .singerListPic{
     display: inline-block;
     float: left;
@@ -92,16 +101,18 @@ export default{
 .listSingerName p{
     /* display: inline-block; */
     font-size: 14px;
-    line-height: 47px;
+    line-height: 50px;
     padding: 0;
     margin: 0;
     padding-left: 20px;
 }
 
 .el-icon-arrow-right{
+    position: absolute;
+    right: 0px;
+    top:17px;
+    margin: auto;
     display: inline-block;
-    float: right;
-    line-height: 47px;
     padding-right: 10px;
     color:#919191;
 }

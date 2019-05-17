@@ -5,7 +5,7 @@
         </div> -->
         <div class="singerList">
             <ul>
-                <li v-for="item in singerData.singerList" :key="item.id"   v-on:click="singerListClicked(($event))">
+                <li v-for="item in singerData.singerList" :key="item.id"  @touchstart="singerListClicked(($event))"  @touchend="singerListNoClicked(($event))">
                     <div class="singerListItem" >
                         <div class="singerListPic" >
                             <img :src="item.singer_pic" alt="">
@@ -45,7 +45,11 @@ export default{
         },
         singerListClicked: function(event){
             var el = event.currentTarget;
-            el.style.backgroundColor="red";
+            el.style.backgroundColor="#c5c5c5";
+        },
+        singerListNoClicked: function(event){
+            var el = event.currentTarget;
+            el.style.backgroundColor="#ffffff";
         }
     },
     
@@ -63,7 +67,7 @@ export default{
 
 <style>
 .singerListItem{
-    border-bottom: 0.5px #00000066 solid;
+    border-bottom: 0.5px #c5c5c5 solid;
     position: relative;
     height: 50px;
 }

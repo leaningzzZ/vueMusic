@@ -3,7 +3,7 @@
     <div class="swiper" v-loading="loading">
       <swiper ref="mySwiper" v-if="recommendData.slider.length>0">
         <swiper-slide v-for="item in recommendData.slider" :key="item.id">
-          <a :href="item.linkUrl">
+          <a href="#">
             <img :src="item.picUrl" alt>
           </a>
         </swiper-slide>
@@ -84,8 +84,8 @@ export default {
   width: 100%;
   height: 100%;
 }
-.swiper {
-  height: 23vh;
+.swiper,.swiper-container{
+  height: 30vh;
 }
 .title{
   color:black;

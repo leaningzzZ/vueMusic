@@ -1,8 +1,5 @@
 <template>
     <div>
-        <!-- <div class = "title">
-            singerList
-        </div> -->
         <div class="singerList">
             <ul>
                 <li v-for="item in singerData.singerList" :key="item.id"  @touchstart="singerListClicked(($event))"  @touchend="singerListNoClicked(($event))">
@@ -16,15 +13,12 @@
                         <i class="el-icon-arrow-right"></i>
                     </div>
                 </li>
-
             </ul>
         </div>
     </div>
 </template>
 
 <script>
-// import { getRecommend } from "../../api/recommend.js";
-import { ERR_OK } from "../../api/config.js";
 export default{
     created() {
         this.getSingerList();

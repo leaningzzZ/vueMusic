@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="swiper" v-loading="loading">
       <swiper ref="mySwiper" v-if="recommendData.slider.length>0">
         <swiper-slide v-for="item in recommendData.slider" :key="item.id">
@@ -80,6 +80,10 @@ export default {
 };
 </script>
 <style scoped>
+.container{
+  overflow-y: scroll;
+  height: 85vh;
+}
 .swiper-slide img {
   width: 100%;
   height: 100%;

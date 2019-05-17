@@ -1,6 +1,6 @@
 <template>
     <div>
-        <audio :src="this.songUrl" controls></audio>
+        <audio :src="this.songUrl" autoplay controls></audio>
     </div>
 </template>
 <script>
@@ -18,3 +18,8 @@ export default {
     }
 }
 </script>
+<style>
+audio{
+    width: 100%
+}
+</style>

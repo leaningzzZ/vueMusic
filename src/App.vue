@@ -5,18 +5,15 @@
     <!-- <keep-alive>避免导航切换重复发送请求 -->
         <router-view/>
     <!-- </keep-alive> -->
-    <player></player>
   </div>
 </template>
 <script>
 import MyHeader from "./components/header/header"
 import MyTab from "./components/tab/tab"
-import player from "./components/player/player"
 export default {
   components:{
     MyHeader,
-    MyTab,
-    player
+    MyTab
   }
 }
 </script>

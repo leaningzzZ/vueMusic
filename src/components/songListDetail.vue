@@ -41,7 +41,8 @@ export default {
       this.$api.get(`tencent/songList?id=${this.listId}`).then(res => {
         this.listData = res.data.data[0];
         this.loading = false;
-        console.log(this.listData);
+        this.$store.commit('addIntoPlayList',this.listData.songlist)
+        console.log(this.$store.state.playList)
       });
   },
   data() {
@@ -61,7 +62,8 @@ export default {
   },
   methods: {
     play(mid) {
-      this.$router.push({ name: "player", params: { mid: mid } });
+      this.$store.commit("musicPlay",mid)
+      console.log(this.$store.state.onPlaying)
     }
   }
 };

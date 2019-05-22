@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="player" :style="top">
     <audio :src="this.songUrl" autoplay controls></audio>
   </div>
 </template>
 <script>
+import { constants } from 'crypto';
 export default {
+
   created() {
     console.log(this.$store.state.songList);
     this.$api
@@ -31,5 +33,12 @@ export default {
 <style>
 audio {
   width: 100%;
+}
+
+.player{
+  width: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
 }
 </style>

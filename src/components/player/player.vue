@@ -1,43 +1,40 @@
 <template>
-  <div class="player" :style="top" >
-    <audio :src="this.songUrl"  autoplay controls></audio>
+  <div class="player">
+    {{this.$store.state.onPlayingIndex}}
+    <audio :src="this.songUrl" autoplay controls @ended="nextMusic"></audio>
   </div>
 </template>
 <script>
-import { constants } from 'crypto';
+import { constants } from "crypto";
 export default {
-
-  // created() {
-  //   console.log(this.$store.state.songList);
-  //   this.$api
-  //     .get(`tencent/url?id=${this.$route.params.mid}&isRedirect=0`)
-  //     .then(res => {
-  //       this.songUrl = res.data.data;
-  //     });
-  // },
   data() {
     return {
       songUrl: ""
     };
   },
+  methods: {
+    nextMusic() {
+      this.$store.commit("nextMusic")
+    }
+  },
   watch: {
-    onPlaying: function(){
-      console.log(1)
-      this.$api.get(`tencent/url?id=${this.$store.state.onPlaying}&isRedirect=0`).then(res => {
-        this.songUrl = res.data.data;
-      });
+    songMid: {//监听songMid的变化，改变则重新请求url
+      handler: function(newer, older) {
+        // 可以获取新值与老值两个参数
+        this.$api
+          .get(`tencent/url?id=${newer}&isRedirect=0`)
+          .then(res => {
+            this.songUrl = res.data.data;
+          });
+        // console.log(newer, "新ID");
+        // console.log(older, "旧ID");
+      },
     }
   },
   computed: {
-    onPlaying:function(){
-      return this.$store.state.onPlaying
-    },
-    // songChanged: function() {
-    //     console.log(1)
-    //   this.$api.get(`tencent/url?id=${this.$store.state.onPlaying}&isRedirect=0`).then(res => {
-    //     this.songUrl = res.data.data;
-    //   });
-    // }
+    songMid: function() {
+      return this.$store.state.onPlayingMid;
+    }
   }
 };
 </script>
@@ -46,7 +43,7 @@ audio {
   width: 100%;
 }
 
-.player{
+.player {
   width: 100%;
   background-color: #ffffff;
   position: fixed;

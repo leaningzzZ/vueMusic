@@ -19,7 +19,7 @@
       </div>
       <div class="list">
         <ul>
-          <li v-for="(item,index) in listData.songlist" :key="item.id" @click="play(item.mid)">
+          <li v-for="(item,index) in listData.songlist" :key="item.id" @click="musicPlay(index)">
             <div class="songIndex">{{index+1}}</div>
             <div class="songInfo">
               <h4 class="songName">{{item.name}}</h4>
@@ -61,9 +61,8 @@ export default {
     };
   },
   methods: {
-    play(mid) {
-      this.$store.commit("musicPlay",mid)
-      console.log(this.$store.state.onPlaying)
+    musicPlay(index) {
+      this.$store.commit("musicPlay",index)
     }
   }
 };

@@ -22,6 +22,12 @@ export default new Vuex.Store({
       }
       state.onPlayingMid=state.playList[state.onPlayingIndex].mid
     },
+    singerMusicPlay(state,index){
+      if(index||index==0){
+      state.onPlayingIndex = index;
+      }
+      state.onPlayingMid=state.playList[state.onPlayingIndex].musicData.albummid
+    },
     //播放完切歌
     nextMusic(state){
       if(state.playModel=="list"){

@@ -2,7 +2,7 @@
     <div>
         <div class="singerList">
             <ul>
-                <li v-for="item in singerData.singerList" :key="item.id"  @touchstart="singerListClicked(($event))"  @touchend="singerListNoClicked(($event))">
+                <li v-for="item in singerData.singerList" :key="item.id" @click="gosingerDetail(item.singer_mid)" @touchstart="singerListClicked(($event))"  @touchend="singerListNoClicked(($event))">
                     <div class="singerListItem" >
                         <div class="singerListPic" >
                             <img :src="item.singer_pic" alt="">
@@ -44,13 +44,17 @@ export default{
         singerListNoClicked: function(event){
             var el = event.currentTarget;
             el.style.backgroundColor="#ffffff";
+        },
+        gosingerDetail(itemId){
+            let singerStorage=window.localStorage;
+            singerStorage.singerId=itemId;
+            this.$router.push({name: 'singerDetail'})
         }
     },
     
     data(){
         return {
             singerData:{
-                slider:[],
                 singerList:[]
             },
             loading:false

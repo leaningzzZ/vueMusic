@@ -61,6 +61,7 @@ export default {
         });
     },
     goSongListDetail(dissid,listennum) {
+      console.log("xxx"+this.songList)
       let storage=window.localStorage;
       storage.listId=dissid;
       storage.listennum=listennum;//修复歌单列表刷新报错，通过采用localStorage传值

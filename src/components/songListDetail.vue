@@ -40,7 +40,6 @@ export default {
       (this.playCount = window.localStorage.listennum),
       this.$api.get(`tencent/songList?id=${this.listId}`).then(res => {
         this.listData = res.data.data[0];
-        console.log("xas"+JSON.stringify(this.listData))
         this.loading = false;
         this.$store.commit('addIntoPlayList',this.listData.songlist)
         console.log(this.$store.state.playList)

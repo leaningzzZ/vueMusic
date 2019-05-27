@@ -1,37 +1,52 @@
 <template>
-  <div class="listBody">
-      <div class="title">
-        <p>歌单列表</p>
+  <div class="container" v-loading="loading">
+    <div class="listHeader">
+      <div class="singerPic">
+        <img :src="singerPic" alt>
       </div>
-      <div class="list">
-        <ul>
-          <li v-for="(item,index) in singerData.song" :key="item.id" @click="singerMusicPlay(index)">
-            <div class="songIndex">{{index+1}}</div>
-            <div class="songInfo">
-              <h4 class="songName">{{item.musicData.albumname}}</h4>
-              <div class="singer">{{item.musicData.singer[0].name}}</div>
-              <div class="el-icon-caret-right"></div>
-            </div>
-          </li>
-        </ul>
+      <div class="singerName">
+        <p>{{singerName}}</p>
+      </div>
+      <div class="singerCountry">
+        <p>{{singerCountry}}</p>
       </div>
     </div>
+    <div class="listBody">
+        <div class="list">
+          <ul>
+            <li v-for="(item,index) in singerData.song" :key="item.id" @click="singerMusicPlay(index)">
+              <div class="songIndex">{{index+1}}</div>
+              <div class="songInfo">
+                <h4 class="songName">{{item.musicData.songname}}</h4>
+                <div class="singer">{{item.musicData.singer[0].name}}</div>
+                <div class="el-icon-caret-right"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+  </div>
 </template>
 <script>
 export default {
   created() {
     this.loading = true;
-    (this.singerId = window.localStorage.singerId),
-      this.$api.get(`tencent/song/artist?id=${this.singerId}`).then(res => {
-        console.log(res.data.data)
-        this.singerData.song = res.data.data;
-        this.loading = false
-         this.$store.commit('addIntoPlayList',this.singerData.song)
-      });
+    this.singerId = window.localStorage.singerId;
+    this.singerName = window.localStorage.singerName;
+    this.singerPic = window.localStorage.singerPic;
+    this.singerCountry = window.localStorage.singerCountry;
+    this.$api.get(`tencent/song/artist?id=${this.singerId}`).then(res => {
+      this.singerData.song = res.data.data;
+      this.loading = false
+      this.$store.commit('addIntoPlayList',this.singerData.song)
+    })
   },
   data() {
     return {
       singerId:"",
+      singerName:"",
+      singerPic:"",
+      singerCountry:"",
       loading: false,
       singerData: {
         song: []
@@ -40,22 +55,50 @@ export default {
   },
   methods: {
     singerMusicPlay(index) {
-      this.$store.commit("singerMusicPlay",index)
+      this.$store.commit("musicPlay",index)
     }
   }
 };
 </script>
 <style scoped>
+p{
+  margin: 0;
+  padding: 0;
+}
+.listHeader{
+  position: relative;
+}
+.singerPic{
+  height: 40vh;
+  overflow: hidden;
+}
+.singerPic img{
+  width: 100%;
+}
+.singerName{
+  color: #fff;
+  position: absolute;
+  bottom:40px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 25px;
+  font-weight: 100;
+}
+
+.singerCountry{
+  color: #fff;
+  position: absolute;
+  bottom:15px;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 100;
+  margin-right: auto;
+  margin-left: auto;
+}
 
 .listBody{
   margin-bottom: 8vh;
-}
-.listBody .title {
-  background: #e2e2e3;
-}
-.listBody .title p {
-  padding: 0;
-  margin: 2vh;
 }
 ul {
   list-style: none;

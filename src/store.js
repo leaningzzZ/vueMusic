@@ -20,14 +20,14 @@ export default new Vuex.Store({
       if(index||index==0){
       state.onPlayingIndex = index;
       }
-      state.onPlayingMid=state.playList[state.onPlayingIndex].mid
-    },
-    singerMusicPlay(state,index){
-      if(index||index==0){
-      state.onPlayingIndex = index;
+      if( state.playList[state.onPlayingIndex].mid !="" && state.playList[state.onPlayingIndex].mid !=null){
+        state.onPlayingMid=state.playList[state.onPlayingIndex].mid
       }
-      state.onPlayingMid=state.playList[state.onPlayingIndex].musicData.albummid
+      else if( state.playList[state.onPlayingIndex].musicData.songmid != "" && state.playList[state.onPlayingIndex].musicData.songmid != null){
+        state.onPlayingMid=state.playList[state.onPlayingIndex].musicData.songmid
+      }
     },
+
     //播放完切歌
     nextMusic(state){
       if(state.playModel=="list"){

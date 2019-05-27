@@ -38,6 +38,7 @@ export default {
     this.$api.get(`tencent/song/artist?id=${this.singerId}`).then(res => {
       this.singerData.song = res.data.data;
       this.loading = false
+      console.log(this.singerData.song)
       this.$store.commit('addIntoPlayList',this.singerData.song)
     })
   },

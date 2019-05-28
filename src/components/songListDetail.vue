@@ -123,6 +123,9 @@ export default {
   padding: 2vh;
   margin: 0;
 }
+.listBody{
+  margin-bottom: 8vh;
+}
 .listBody .title {
   background: #e2e2e3;
 }

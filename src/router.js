@@ -6,6 +6,8 @@ import search from "./components/search/search"
 import rank from "./components/rank/rank"
 import songListDetail from "./components/songListDetail"
 import player from "./components/player/player"
+import singerDetail from "./components/singerDetail"
+import searchResult from "./components/searchResult"
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +47,16 @@ export default new Router({
       path:"/player",
       name:"player",
       component:player
+    },
+    {
+      path:"/singerDetail",
+      name:"singerDetail",
+      component:singerDetail
+    },
+    {
+      path:"/searchResult",
+      name:"searchResult",
+      component:searchResult
     }
     
   ]

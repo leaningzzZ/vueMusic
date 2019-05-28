@@ -20,8 +20,19 @@ export default new Vuex.Store({
       if(index||index==0){
       state.onPlayingIndex = index;
       }
-      state.onPlayingMid=state.playList[state.onPlayingIndex].mid
+      //播放歌单歌曲
+      if( state.playList[state.onPlayingIndex].mid !="" && state.playList[state.onPlayingIndex].mid !=null){
+        state.onPlayingMid=state.playList[state.onPlayingIndex].mid
+      }//播放搜索的歌曲
+      else if( state.playList[state.onPlayingIndex].songmid != "" && state.playList[state.onPlayingIndex].songmid != null ){
+        state.onPlayingMid=state.playList[state.onPlayingIndex].songmid
+      }//播放歌手歌曲
+      else if( state.playList[state.onPlayingIndex].musicData.songmid != "" && state.playList[state.onPlayingIndex].musicData.songmid != null){
+        state.onPlayingMid=state.playList[state.onPlayingIndex].musicData.songmid
+      }
+      
     },
+
     //播放完切歌
     nextMusic(state){
       if(state.playModel=="list"){

@@ -56,12 +56,12 @@ export default {
 .listBody{
   margin-bottom: 8vh;
 }
-ul {
+.list ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-li {
+.list ul li {
   display: flex;
 }
 .songName {

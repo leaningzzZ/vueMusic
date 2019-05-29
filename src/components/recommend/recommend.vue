@@ -102,7 +102,8 @@ export default {
 .songList ul {
   width: 100%;
   list-style: none;
-  display: inline-block;
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
   padding: 0;
 }

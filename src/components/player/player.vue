@@ -12,14 +12,19 @@
           <i class="el-icon-caret-right" @click="nextMusic"></i>
         </div>
         <div class="process">
-          <el-progress :percentage="musicProcess" :stroke-width="10" color="#6f7ad3" :show-text="false"></el-progress>
+          <el-progress
+            :percentage="musicProcess"
+            :stroke-width="10"
+            color="#6f7ad3"
+            :show-text="false"
+          ></el-progress>
         </div>
       </div>
     </div>
     <div class="fullScreenPlayer" v-else>
       <div class="topbar">
-          <i class="el-icon-back" @click="fullScreen"></i>
-          <div class="title">{{songInfo.name}}</div>
+        <i class="el-icon-back" @click="fullScreen"></i>
+        <div class="title">{{songInfo.name}}</div>
       </div>
       <div class="body">
         <div class="img">
@@ -30,7 +35,12 @@
         <div class="process">
           <span class="currentTime">{{currentTime|timeFormat}}</span>
           <div class="processBody">
-            <el-progress :percentage="musicProcess" :stroke-width="10" color="#6f7ad3" :show-text="false"></el-progress>
+            <el-progress
+              :percentage="musicProcess"
+              :stroke-width="10"
+              color="#6f7ad3"
+              :show-text="false"
+            ></el-progress>
           </div>
           <span class="duration">{{duration|timeFormat}}</span>
         </div>
@@ -42,25 +52,34 @@
         </div>
       </div>
     </div>
-    <audio :src="this.songUrl" autoplay @ended="nextMusic" ref="audio" @canplay="oncanPlay()" @timeupdate="updateTime"></audio>
+    <audio
+      :src="this.songUrl"
+      autoplay
+      @ended="nextMusic"
+      ref="audio"
+      @canplay="oncanPlay()"
+      @timeupdate="updateTime"
+    ></audio>
   </div>
 </template>
 <script>
 import axios from "axios";
+import Lyric from "lyric-parser";
 export default {
   data() {
     return {
-      songInfo:"",
+      songInfo: "",
       songUrl: "",
-      songPic: "",
-      musicProcess: 0,
-      isPlaying: false,
-      currentTime: 0,
-      duration: 0,
+      songPic: "", //图片,
+      songLyric: "",
+      musicProcess: 0, //播放进度
+      isPlaying: false, //是否正在播放
+      currentTime: 0, //当前播放时长
+      duration: 0 //总时长
     };
   },
   methods: {
-    fullScreen(){
+    fullScreen() {
       this.$store.commit("changeIsFullScreen");
     },
     updateTime() {
@@ -70,10 +89,10 @@ export default {
       }
     },
     nextMusic() {
-      this.$store.commit("nextMusic",1);
+      this.$store.commit("nextMusic", 1);
     },
-    lastMusic(){
-      this.$store.commit("nextMusic",-1);
+    lastMusic() {
+      this.$store.commit("nextMusic", -1);
     },
     getSongUrl(newer) {
       return this.$api.get(`tencent/url?id=${newer}&isRedirect=0`);
@@ -81,8 +100,11 @@ export default {
     getSongPic(newer) {
       return this.$api.get(`tencent/pic?id=${newer}&isRedirect=0`);
     },
-    getSongInfo(newer){
-      return this.$api.get(`tencent/song?id=${newer}`)
+    getSongInfo(newer) {
+      return this.$api.get(`tencent/song?id=${newer}`);
+    },
+    getSongLyric(newer) {
+      return this.$api.get(`/tencent/lrc?id=${newer}`);
     },
     musicPause() {
       this.$refs.audio.pause();
@@ -98,7 +120,7 @@ export default {
       this.duration = this.$refs.audio.duration;
       this.canPlay = true;
       console.log(this.duration);
-    },
+    }
   },
   watch: {
     songMid: {
@@ -106,15 +128,25 @@ export default {
       handler(newer, older) {
         // 可以获取新值与老值两个参数
         console.log(axios);
-        axios.all([this.getSongUrl(newer), this.getSongPic(newer),this.getSongInfo(newer)]).then(
-          axios.spread((urlData, picData,infoData) => {
-            this.songUrl = urlData.data.data;
-            this.songPic = picData.data.data;
-            this.songInfo=infoData.data.data[0]
-            console.log(this.songInfo)
-            this.isPlaying = true;
-          })
-        );
+        axios
+          .all([
+            this.getSongUrl(newer),
+            this.getSongPic(newer),
+            this.getSongInfo(newer),
+            this.getSongLyric(newer)
+          ])
+          .then(
+            axios.spread((urlData, picData, infoData, lyricData) => {
+              this.songUrl = urlData.data.data;
+              this.songPic = picData.data.data;
+              this.songInfo = infoData.data.data[0];
+              this.songLyric = lyricData.data;
+              console.log(this.songLyric);
+              let lyric = new Lyric(this.songLyric);
+              console.log(lyric);
+              this.isPlaying = true;
+            })
+          );
       }
     }
   },
@@ -123,27 +155,26 @@ export default {
       return this.$store.state.onPlayingMid;
     }
   },
-  filters:{
+  filters: {
     timeFormat(time) {
       //秒转化格式
-      if(time){
-        let minute =time/60;
-        let second= time%60;
-        if(second<10){
+      if (time) {
+        let minute = time / 60;
+        let second = time % 60;
+        if (second < 10) {
           return `${Math.floor(minute)}:0${Math.floor(second)}`;
-        }else{
+        } else {
           return `${Math.floor(minute)}:${Math.floor(second)}`;
-          }
-
-      }else{
-        return `00:00`
+        }
+      } else {
+        return `00:00`;
       }
     }
   }
 };
 </script>
 <style>
-.content{
+.content {
   position: relative;
   z-index: 999;
 }
@@ -189,45 +220,45 @@ audio {
   vertical-align: top;
   padding-top: 18px;
 }
-.fullScreenPlayer{
+.fullScreenPlayer {
   height: 100%;
   width: 100%;
   background: #666;
   position: fixed;
   bottom: 0;
-  color:#fff;
+  color: #fff;
 }
-.fullScreenPlayer .topbar{
+.fullScreenPlayer .topbar {
   height: 5vh;
   line-height: 5vh;
   font-size: 20px;
   text-align: left;
   border-bottom: 1px solid #ccc;
 }
-.fullScreenPlayer .topbar .title{
+.fullScreenPlayer .topbar .title {
   display: inline-block;
   width: 90%;
   text-align: center;
 }
-.fullScreenPlayer .body .img{
+.fullScreenPlayer .body .img {
   height: 80vh;
   width: 100%;
 }
-.fullScreenPlayer .body .img img{
+.fullScreenPlayer .body .img img {
   margin-top: 20vh;
-  width:70vw;
+  width: 70vw;
   height: 70vw;
   border-radius: 50%;
 }
-.fullScreenPlayer .footer{
+.fullScreenPlayer .footer {
   height: 15vh;
 }
-.fullScreenPlayer .footer .processBody{
+.fullScreenPlayer .footer .processBody {
   width: 70%;
   display: inline-block;
-  margin: 0 20px
+  margin: 0 20px;
 }
-.fullScreenPlayer .footer .footTool{
+.fullScreenPlayer .footer .footTool {
   width: 100%;
   height: 80%;
   font-size: 40px;
@@ -236,13 +267,18 @@ audio {
 .fullScreenPlayer .footer .footTool .el-icon-caret-right:before {
   border: none;
 }
-.play{     animation: rotate 20s linear infinite}
-
-.pause{     animation-play-state: paused}
-
-@keyframes rotate {
-      0%{transform: rotate(0)}
-    100%{         transform:  rotate(360deg)}
+.play {
+  animation: rotate 20s linear infinite;
 }
-
+.pause {
+  animation-play-state: paused;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>

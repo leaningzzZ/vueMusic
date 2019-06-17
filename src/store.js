@@ -8,12 +8,16 @@ export default new Vuex.Store({
     playList:[],//播放列表
     onPlayingIndex:-1,//正在播放的,存放歌曲的mid
     onPlayingMid:"",
-    playModel:"list"//random随机播放,list顺序播放
+    playModel:"list",//random随机播放,list顺序播放,
+    isFullScreen:false,//是否全屏（点开播放详情）
   },
   mutations: {
     //点击歌单时，将歌单加入播放列表
     addIntoPlayList (state, list) {
       state.playList = list;
+    },
+    changeIsFullScreen(state){
+      state.isFullScreen=!state.isFullScreen
     },
     //点击歌曲，通过索引改变mid
     musicPlay(state,index){
@@ -34,9 +38,9 @@ export default new Vuex.Store({
     },
 
     //播放完切歌
-    nextMusic(state){
+    nextMusic(state,i){
       if(state.playModel=="list"){
-        state.onPlayingIndex++;
+        state.onPlayingIndex+=i;
       }else if(state.playModel=="random"){
         state.onPlayingIndex=state.onPlayingIndex + Math.floor(Math.random()*state.playList.length)//随机加上一个不大于列表中歌曲总数的整数。待验证
       }

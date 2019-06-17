@@ -46,7 +46,6 @@ export default {
       this.$store.commit("musicPlay", index);
     },
     requestSearch() {
-      console.log('xxx')
       this.$api
         .get(
           `tencent/search?keyword=${this.keyword}&type=song&pageSize=100&page=0`
@@ -60,7 +59,7 @@ export default {
     },
     debounceRequestSearch(delay) {
       window.clearTimeout(this.requestDelay);
-      this.requestDelay = setTimeout(this.requestSearch, delay);
+      this.requestDelay = window.setTimeout(this.requestSearch, delay);
     }
   }
 };

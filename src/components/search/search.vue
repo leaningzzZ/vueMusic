@@ -1,62 +1,77 @@
 <template>
-    <div>
-        <el-input class="search" placeholder="搜索歌曲丶歌单丶专辑" prefix-icon="el-icon-search"  v-model="keyword" v-on:keyup.enter="search(keyword)" > </el-input>
-        <div class="listBody">
-            <div class="list">
-                <ul>
-                <li v-for="(item,index) in searchList" :key="item.id" @click="musicPlay(index)">
-                    <div class="songIndex">{{index+1}}</div>
-                    <div class="songInfo">
-                    <h4 class="songName">{{item.songname}}</h4>
-                    <div class="singer">{{item.singer[0].name}}</div>
-                    <div class="el-icon-caret-right"></div>
-                    </div>
-                </li>
-                </ul>
+  <div>
+    <el-input
+      class="search"
+      placeholder="搜索歌曲丶歌单丶专辑"
+      prefix-icon="el-icon-search"
+      v-model="keyword"
+      v-on:keyup.enter="search(keyword)"
+    ></el-input>
+    <div class="listBody">
+      <div class="list">
+        <ul>
+          <li v-for="(item,index) in searchList" :key="item.id" @click="musicPlay(index)">
+            <div class="songIndex">{{index+1}}</div>
+            <div class="songInfo">
+              <h4 class="songName">{{item.songname}}</h4>
+              <div class="singer">{{item.singer[0].name}}</div>
+              <div class="el-icon-caret-right"></div>
             </div>
-        </div>
+          </li>
+        </ul>
+      </div>
     </div>
-
+  </div>
 </template>
 
 <script>
+import { clearTimeout, setTimeout } from "timers";
 export default {
-    data(){
-        return{
-            keyword:"",
-            searchList:[]
-        }
-    },
-    watch: {
+  data() {
+    return {
+      keyword: "",
+      searchList: [],
+      requestDelay: ""
+    };
+  },
+  watch: {
     keyword: {
-      handler: function(newer, older) {
-        this.$api
-          .get(`tencent/search?keyword=${this.keyword}&type=song&pageSize=100&page=0`)
-          .then(res => {
-            this.songUrl = res.data.data;
-            this.searchList = res.data.data.list
-            this.$store.commit('addIntoPlayList',this.searchList)
-            console.log(this.$store.state.playList)
-          });
-      },
+      handler() {
+        this.debounceRequestSearch(500);
+      }
     }
   },
-  methods:{
-        musicPlay(index) {
-            this.$store.commit("musicPlay",index)
-        }
+  methods: {
+    musicPlay(index) {
+      this.$store.commit("musicPlay", index);
     },
-}
+    requestSearch() {
+      console.log('xxx')
+      this.$api
+        .get(
+          `tencent/search?keyword=${this.keyword}&type=song&pageSize=100&page=0`
+        )
+        .then(res => {
+          this.songUrl = res.data.data;
+          this.searchList = res.data.data.list;
+          this.$store.commit("addIntoPlayList", this.searchList);
+          console.log(this.$store.state.playList);
+        });
+    },
+    debounceRequestSearch(delay) {
+      window.clearTimeout(this.requestDelay);
+      this.requestDelay = setTimeout(this.requestSearch, delay);
+    }
+  }
+};
 </script>
 
 <style>
-
-input{
-    font-size: 15px;
+input {
+  font-size: 15px;
 }
 
-
-.listBody{
+.listBody {
   margin-bottom: 8vh;
 }
 .list ul {

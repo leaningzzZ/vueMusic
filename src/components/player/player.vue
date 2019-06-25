@@ -27,8 +27,11 @@
         <div class="title">{{songInfo.name}}</div>
       </div>
       <div class="body">
-        <div class="img">
+        <div class="img" v-show="false">
           <img :src="this.songPic" :class="this.isPlaying?'play':pause" alt>
+        </div>
+        <div class="lyric">
+          <p v-for="(item) in songLyric.lines" :key="item.time" >{{item.txt}} </p>
         </div>
       </div>
       <div class="footer">
@@ -54,7 +57,6 @@
     </div>
     <audio
       :src="this.songUrl"
-      autoplay
       @ended="nextMusic"
       ref="audio"
       @canplay="oncanPlay()"
@@ -119,6 +121,7 @@ export default {
       console.log(this.$refs.audio.duration);
       this.duration = this.$refs.audio.duration;
       this.canPlay = true;
+      this.musicPlay();
       console.log(this.duration);
     }
   },
@@ -140,10 +143,8 @@ export default {
               this.songUrl = urlData.data.data;
               this.songPic = picData.data.data;
               this.songInfo = infoData.data.data[0];
-              this.songLyric = lyricData.data;
+              this.songLyric = new Lyric(lyricData.data);
               console.log(this.songLyric);
-              let lyric = new Lyric(this.songLyric);
-              console.log(lyric);
               this.isPlaying = true;
             })
           );
@@ -193,7 +194,6 @@ audio {
   height: 50px;
   line-height: 50px;
   text-align: left;
-  padding: 0px 10px;
   border: 1px solid #999;
 }
 .audioContent .pic,
@@ -240,9 +240,10 @@ audio {
   width: 90%;
   text-align: center;
 }
-.fullScreenPlayer .body .img {
+.fullScreenPlayer .body .img,.fullScreenPlayer .body .lyric {
   height: 80vh;
   width: 100%;
+  overflow: hidden;
 }
 .fullScreenPlayer .body .img img {
   margin-top: 20vh;

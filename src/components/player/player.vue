@@ -1,23 +1,25 @@
 <template>
   <div class="content">
     <div class="player" v-if="!this.$store.state.isFullScreen">
-      {{this.$store.state.onPlayingIndex}}
+      <!-- {{this.$store.state.onPlayingIndex}} -->
       <div class="audioContent">
         <div class="pic" @click="isPlaying?fullScreen():''">
-          <img :src="this.songPic" alt>
+          <img :src="this.songPic" alt />
         </div>
         <div class="tool">
-          <i class="el-icon-video-play" v-if="!isPlaying" @click="musicPlay"></i>
-          <i class="el-icon-video-pause" v-if="isPlaying" @click="musicPause"></i>
-          <i class="el-icon-caret-right" @click="nextMusic"></i>
+          <i class="el-icon-video-play" v-if="!isPlaying" @click="musicPlay" style="color:#31c27c;"></i>
+          <i class="el-icon-video-pause" v-if="isPlaying" @click="musicPause" style="color:#31c27c;"></i>
+          <i class="el-icon-caret-right" @click="nextMusic" style="color:#31c27c;"></i>
         </div>
         <div class="process">
-          <el-progress
-            :percentage="musicProcess"
-            :stroke-width="10"
-            color="#6f7ad3"
-            :show-text="false"
-          ></el-progress>
+          <div class="processBar">
+            <el-progress
+              :percentage="musicProcess"
+              :stroke-width="10"
+              color="#31c27c"
+              :show-text="false"
+            ></el-progress>
+          </div>
         </div>
       </div>
     </div>
@@ -28,7 +30,7 @@
       </div>
       <div class="body">
         <div class="img">
-          <img :src="this.songPic" :class="this.isPlaying?'play':pause" alt>
+          <img :src="this.songPic" :class="this.isPlaying?'play':pause" alt />
         </div>
       </div>
       <div class="footer">
@@ -70,7 +72,8 @@ export default {
     return {
       songInfo: "",
       songUrl: "",
-      songPic: "", //图片,
+      songPic:
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1563225816787&di=44d98b93d8eee72de8c7c3e1fec34cc9&imgtype=0&src=http%3A%2F%2Fpic.962.net%2Fup%2F2016-6%2F20166271054567154.png", //图片,
       songLyric: "",
       musicProcess: 0, //播放进度
       isPlaying: false, //是否正在播放
@@ -194,13 +197,24 @@ audio {
   line-height: 50px;
   text-align: left;
   padding: 0px 10px;
-  border: 1px solid #999;
+  border: none;
+  box-shadow: 0px 0px 12px #cacaca;
 }
-.audioContent .pic,
-.audioContent .pic img {
+.audioContent .pic {
   display: inline-block;
   height: 100%;
   width: 50px;
+}
+.audioContent .pic img{
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translate(0%,-50%);
+  width: 40px;
+  border-radius: 50%;
+}
+.pic {
+  margin-right: 5px;
 }
 .audioContent .tool {
   display: inline-block;
@@ -212,13 +226,15 @@ audio {
 .audioContent .tool .el-icon-caret-right:before {
   border: none;
 }
+.processBar{
+  margin-left: 5px;
+  position: absolute;
+  width: 68%;
+  transform: translate(0%,-50%);
+  top: 50%;
+}
 .audioContent .process {
   display: inline-block;
-  width: 70%;
-  height: 50px;
-  line-height: 50px;
-  vertical-align: top;
-  padding-top: 18px;
 }
 .fullScreenPlayer {
   height: 100%;

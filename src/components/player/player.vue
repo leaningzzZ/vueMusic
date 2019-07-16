@@ -35,7 +35,12 @@
       </div>
       <div class="body">
         <div class="img" v-if="!showLyric">
-          <img :src="this.songPic" :class="this.isPlaying?'play':pause" @click="showLyric = true"  alt />
+          <img
+            :src="this.songPic"
+            :class="this.isPlaying?'play':pause"
+            @click="showLyric = true"
+            alt
+          />
         </div>
         <div class="lyric" v-if="showLyric" @click="showLyric = false ">
           <p v-for="(item) in songLyric.lines" :key="item.time">{{item.txt}}</p>
@@ -85,13 +90,15 @@ export default {
       musicProcess: 0, //播放进度
       isPlaying: false, //是否正在播放
       currentTime: 0, //当前播放时长
-      duration: 0 ,//总时长
-      showLyric:false,
+      duration: 0, //总时长
+      showLyric: false
     };
   },
   methods: {
     fullScreen() {
-      this.$store.commit("changeIsFullScreen");
+      if (this.$store.state.onPlayingMid !== "") {
+        this.$store.commit("changeIsFullScreen");
+      }
     },
     updateTime() {
       this.currentTime = this.$refs.audio.currentTime;

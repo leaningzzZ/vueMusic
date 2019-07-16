@@ -8,7 +8,12 @@
         </div>
         <div class="tool">
           <i class="el-icon-video-play" v-if="!isPlaying" @click="musicPlay" style="color:#31c27c;"></i>
-          <i class="el-icon-video-pause" v-if="isPlaying" @click="musicPause" style="color:#31c27c;"></i>
+          <i
+            class="el-icon-video-pause"
+            v-if="isPlaying"
+            @click="musicPause"
+            style="color:#31c27c;"
+          ></i>
           <i class="el-icon-caret-right" @click="nextMusic" style="color:#31c27c;"></i>
         </div>
         <div class="process">
@@ -33,7 +38,7 @@
           <img :src="this.songPic" :class="this.isPlaying?'play':pause" alt />
         </div>
         <div class="lyric">
-          <p v-for="(item) in songLyric.lines" :key="item.time" >{{item.txt}} </p>
+          <p v-for="(item) in songLyric.lines" :key="item.time">{{item.txt}}</p>
         </div>
       </div>
       <div class="footer">
@@ -117,8 +122,10 @@ export default {
       console.log(1);
     },
     musicPlay() {
-      this.$refs.audio.play();
-      this.isPlaying = true;
+      if (this.$store.state.onPlayingMid !== "") {
+        this.$refs.audio.play();
+        this.isPlaying = true;
+      }
     },
     oncanPlay() {
       console.log(this.$refs.audio.duration);
@@ -206,11 +213,11 @@ audio {
   height: 100%;
   width: 50px;
 }
-.audioContent .pic img{
+.audioContent .pic img {
   display: inline-block;
   position: absolute;
   top: 50%;
-  transform: translate(0%,-50%);
+  transform: translate(0%, -50%);
   width: 40px;
   border-radius: 50%;
 }
@@ -227,11 +234,11 @@ audio {
 .audioContent .tool .el-icon-caret-right:before {
   border: none;
 }
-.processBar{
+.processBar {
   margin-left: 5px;
   position: absolute;
   width: 68%;
-  transform: translate(0%,-50%);
+  transform: translate(0%, -50%);
   top: 50%;
 }
 .audioContent .process {
@@ -257,7 +264,8 @@ audio {
   width: 90%;
   text-align: center;
 }
-.fullScreenPlayer .body .img,.fullScreenPlayer .body .lyric {
+.fullScreenPlayer .body .img,
+.fullScreenPlayer .body .lyric {
   height: 80vh;
   width: 100%;
   overflow: hidden;

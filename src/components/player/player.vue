@@ -29,8 +29,9 @@
       </div>
     </div>
     <div class="fullScreenPlayer" v-else>
+          <img class="backgroundImg" :src="this.songPic" alt />
       <div class="topbar">
-        <i class="el-icon-back" @click="fullScreen"></i>
+        <i class="el-icon-back" @click="fullScreen" style="color:#d8d8d8;margin-left:2%;"></i>
         <div class="title">{{songInfo.name}}</div>
       </div>
       <div class="body">
@@ -53,7 +54,7 @@
             <el-progress
               :percentage="musicProcess"
               :stroke-width="10"
-              color="#6f7ad3"
+              color="#31c27c"
               :show-text="false"
             ></el-progress>
           </div>
@@ -255,7 +256,7 @@ audio {
 .fullScreenPlayer {
   height: 100%;
   width: 100%;
-  background: #666;
+  background-color: rgb(121, 121, 121);
   position: fixed;
   bottom: 0;
   color: #fff;
@@ -269,20 +270,35 @@ audio {
 }
 .fullScreenPlayer .topbar .title {
   display: inline-block;
-  width: 90%;
+  width: 86.5%;
   text-align: center;
 }
+
 .fullScreenPlayer .body .img,
 .fullScreenPlayer .body .lyric {
   height: 80vh;
   width: 100%;
   overflow: hidden;
 }
+
 .fullScreenPlayer .body .img img {
   margin-top: 20vh;
   width: 70vw;
   height: 70vw;
   border-radius: 50%;
+}
+
+.backgroundImg{
+  opacity:0.6;
+  -webkit-filter: blur(40px);
+  z-index: -999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius:0% !important;
 }
 .fullScreenPlayer .footer {
   height: 15vh;

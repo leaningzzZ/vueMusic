@@ -3,7 +3,7 @@
     <div class="player" v-if="!this.$store.state.isFullScreen">
       <!-- {{this.$store.state.onPlayingIndex}} -->
       <div class="audioContent">
-        <div class="pic" @click="isPlaying?fullScreen():''">
+        <div class="pic" @click="fullScreen()">
           <img :src="this.songPic" alt />
         </div>
         <div class="tool">

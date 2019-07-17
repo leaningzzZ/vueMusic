@@ -1,37 +1,50 @@
 <template>
   <div class="content">
     <div class="player" v-if="!this.$store.state.isFullScreen">
-      {{this.$store.state.onPlayingIndex}}
+      <!-- {{this.$store.state.onPlayingIndex}} -->
       <div class="audioContent">
-        <div class="pic" @click="isPlaying?fullScreen():''">
-          <img :src="this.songPic" alt>
+        <div class="pic" @click="fullScreen()">
+          <img :src="this.songPic" alt />
         </div>
         <div class="tool">
-          <i class="el-icon-video-play" v-if="!isPlaying" @click="musicPlay"></i>
-          <i class="el-icon-video-pause" v-if="isPlaying" @click="musicPause"></i>
-          <i class="el-icon-caret-right" @click="nextMusic"></i>
+          <i class="el-icon-video-play" v-if="!isPlaying" @click="musicPlay" style="color:#31c27c;"></i>
+          <i
+            class="el-icon-video-pause"
+            v-if="isPlaying"
+            @click="musicPause"
+            style="color:#31c27c;"
+          ></i>
+          <i class="el-icon-caret-right" @click="nextMusic" style="color:#31c27c;"></i>
         </div>
         <div class="process">
-          <el-progress
-            :percentage="musicProcess"
-            :stroke-width="10"
-            color="#6f7ad3"
-            :show-text="false"
-          ></el-progress>
+          <div class="processBar">
+            <el-progress
+              :percentage="musicProcess"
+              :stroke-width="10"
+              color="#31c27c"
+              :show-text="false"
+            ></el-progress>
+          </div>
         </div>
       </div>
     </div>
     <div class="fullScreenPlayer" v-else>
+          <img class="backgroundImg" :src="this.songPic" alt />
       <div class="topbar">
-        <i class="el-icon-back" @click="fullScreen"></i>
+        <i class="el-icon-back" @click="fullScreen" style="color:#d8d8d8;margin-left:2%;"></i>
         <div class="title">{{songInfo.name}}</div>
       </div>
       <div class="body">
-        <div class="img" v-show="false">
-          <img :src="this.songPic" :class="this.isPlaying?'play':pause" alt>
+        <div class="img" v-if="!showLyric">
+          <img
+            :src="this.songPic"
+            :class="this.isPlaying?'play':pause"
+            @click="showLyric = true"
+            alt
+          />
         </div>
-        <div class="lyric">
-          <p v-for="(item) in songLyric.lines" :key="item.time" >{{item.txt}} </p>
+        <div class="lyric" v-if="showLyric" @click="showLyric = false ">
+          <p v-for="(item) in songLyric.lines" :key="item.time">{{item.txt}}</p>
         </div>
       </div>
       <div class="footer">
@@ -41,7 +54,7 @@
             <el-progress
               :percentage="musicProcess"
               :stroke-width="10"
-              color="#6f7ad3"
+              color="#31c27c"
               :show-text="false"
             ></el-progress>
           </div>
@@ -72,17 +85,21 @@ export default {
     return {
       songInfo: "",
       songUrl: "",
-      songPic: "", //图片,
+      songPic:
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1563225816787&di=44d98b93d8eee72de8c7c3e1fec34cc9&imgtype=0&src=http%3A%2F%2Fpic.962.net%2Fup%2F2016-6%2F20166271054567154.png", //图片,
       songLyric: "",
       musicProcess: 0, //播放进度
       isPlaying: false, //是否正在播放
       currentTime: 0, //当前播放时长
-      duration: 0 //总时长
+      duration: 0, //总时长
+      showLyric: false
     };
   },
   methods: {
     fullScreen() {
-      this.$store.commit("changeIsFullScreen");
+      if (this.$store.state.onPlayingMid !== "") {
+        this.$store.commit("changeIsFullScreen");
+      }
     },
     updateTime() {
       this.currentTime = this.$refs.audio.currentTime;
@@ -114,8 +131,10 @@ export default {
       console.log(1);
     },
     musicPlay() {
-      this.$refs.audio.play();
-      this.isPlaying = true;
+      if (this.$store.state.onPlayingMid !== "") {
+        this.$refs.audio.play();
+        this.isPlaying = true;
+      }
     },
     oncanPlay() {
       console.log(this.$refs.audio.duration);
@@ -194,13 +213,25 @@ audio {
   height: 50px;
   line-height: 50px;
   text-align: left;
-  border: 1px solid #999;
+  padding: 0px 10px;
+  border: none;
+  box-shadow: 0px 0px 12px #cacaca;
 }
-.audioContent .pic,
-.audioContent .pic img {
+.audioContent .pic {
   display: inline-block;
   height: 100%;
   width: 50px;
+}
+.audioContent .pic img {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translate(0%, -50%);
+  width: 40px;
+  border-radius: 50%;
+}
+.pic {
+  margin-right: 5px;
 }
 .audioContent .tool {
   display: inline-block;
@@ -212,18 +243,20 @@ audio {
 .audioContent .tool .el-icon-caret-right:before {
   border: none;
 }
+.processBar {
+  margin-left: 5px;
+  position: absolute;
+  width: 68%;
+  transform: translate(0%, -50%);
+  top: 50%;
+}
 .audioContent .process {
   display: inline-block;
-  width: 70%;
-  height: 50px;
-  line-height: 50px;
-  vertical-align: top;
-  padding-top: 18px;
 }
 .fullScreenPlayer {
   height: 100%;
   width: 100%;
-  background: #666;
+  background-color: rgb(121, 121, 121);
   position: fixed;
   bottom: 0;
   color: #fff;
@@ -237,19 +270,35 @@ audio {
 }
 .fullScreenPlayer .topbar .title {
   display: inline-block;
-  width: 90%;
+  width: 86.5%;
   text-align: center;
 }
-.fullScreenPlayer .body .img,.fullScreenPlayer .body .lyric {
+
+.fullScreenPlayer .body .img,
+.fullScreenPlayer .body .lyric {
   height: 80vh;
   width: 100%;
   overflow: hidden;
 }
+
 .fullScreenPlayer .body .img img {
   margin-top: 20vh;
   width: 70vw;
   height: 70vw;
   border-radius: 50%;
+}
+
+.backgroundImg{
+  opacity:0.6;
+  -webkit-filter: blur(40px);
+  z-index: -999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius:0% !important;
 }
 .fullScreenPlayer .footer {
   height: 15vh;

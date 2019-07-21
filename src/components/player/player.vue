@@ -43,9 +43,22 @@
             alt
           />
         </div>
-        <div class="lyric" v-if="showLyric" @click="showLyric = false ">
-          <p v-for="(item) in songLyric.lines" :key="item.time">{{item.txt}}</p>
-        </div>
+        <scroll 
+          ref="lyricList"
+          :data="songLyric&&songLyric.lines"
+          class="lyric" 
+          v-if="showLyric" 
+          @click="showLyric = false ">
+            <div class="wrapper">
+              <p ref="lyricLine" 
+                class="lyricText" 
+                :class="{'current':currentLineNum==index}"
+                v-for="(line,index) in songLyric.lines" 
+                :key="line.time">
+                  {{line.txt}}
+              </p>
+            </div>
+        </scroll>
       </div>
       <div class="footer">
         <div class="process">
@@ -80,7 +93,11 @@
 <script>
 import axios from "axios";
 import Lyric from "lyric-parser";
+import scroll from './scroll';
 export default {
+  components:{
+    scroll
+  },
   data() {
     return {
       songInfo: "",
@@ -88,6 +105,7 @@ export default {
       songPic:
         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1563225816787&di=44d98b93d8eee72de8c7c3e1fec34cc9&imgtype=0&src=http%3A%2F%2Fpic.962.net%2Fup%2F2016-6%2F20166271054567154.png", //图片,
       songLyric: "",
+      currentLineNum:0,//当前歌词所在的行
       musicProcess: 0, //播放进度
       isPlaying: false, //是否正在播放
       currentTime: 0, //当前播放时长
@@ -109,9 +127,11 @@ export default {
     },
     nextMusic() {
       this.$store.commit("nextMusic", 1);
+      this.songLyric.togglePlay()
     },
     lastMusic() {
       this.$store.commit("nextMusic", -1);
+      this.songLyric.togglePlay()
     },
     getSongUrl(newer) {
       return this.$api.get(`tencent/url?id=${newer}&isRedirect=0`);
@@ -128,12 +148,14 @@ export default {
     musicPause() {
       this.$refs.audio.pause();
       this.isPlaying = false;
+      this.songLyric.stop()
       console.log(1);
     },
     musicPlay() {
       if (this.$store.state.onPlayingMid !== "") {
         this.$refs.audio.play();
         this.isPlaying = true;
+        this.songLyric.play()
       }
     },
     oncanPlay() {
@@ -141,7 +163,19 @@ export default {
       this.duration = this.$refs.audio.duration;
       this.canPlay = true;
       this.musicPlay();
-      console.log(this.duration);
+    },
+    handleLyric({lineNum,txt}){
+      this.currentLineNum=lineNum;
+      console.log(lineNum)
+      if (lineNum > 7 &&this.$refs.lyricList) {
+        let lineEl = this.$refs.lyricLine[lineNum - 7];
+        this.$refs.lyricList.scrollToElement(lineEl, 1000);
+      }if (lineNum <= 7 &&this.$refs.lyricList) {
+        this.$refs.lyricList.scrollTo(0, 0, 1000);
+        console.log(this.$refs)
+      }
+      this.playingLyric = txt;
+      
     }
   },
   watch: {
@@ -149,7 +183,10 @@ export default {
       //监听songMid的变化，改变则重新请求url
       handler(newer, older) {
         // 可以获取新值与老值两个参数
-        console.log(axios);
+        // this.currentLyric = null;
+        // this.playingLyric = '';
+        // this.currentLineNum = 0;
+        // this.songLyric=''
         axios
           .all([
             this.getSongUrl(newer),
@@ -162,11 +199,13 @@ export default {
               this.songUrl = urlData.data.data;
               this.songPic = picData.data.data;
               this.songInfo = infoData.data.data[0];
-              this.songLyric = new Lyric(lyricData.data);
-              console.log(this.songLyric);
               this.isPlaying = true;
+              this.songLyric = new Lyric(lyricData.data,this.handleLyric);
+              if(this.isPlaying){
+                this.songLyric.play()//调用lyric-parser的方法
+              }
             })
-          );
+          )
       }
     }
   },
@@ -330,5 +369,15 @@ audio {
   100% {
     transform: rotate(360deg);
   }
+}
+.lyricText{
+  color: rgba(1, 1, 1, 0.5)
+}
+.current{
+  color:rgba(0, 0, 0, 1);
+  font-size: 20px;
+}
+*{
+  touch-action: none;
 }
 </style>

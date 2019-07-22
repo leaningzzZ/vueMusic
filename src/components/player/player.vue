@@ -48,8 +48,8 @@
           :data="songLyric&&songLyric.lines"
           class="lyric" 
           v-if="showLyric" 
-          @click="showLyric = false ">
-            <div class="wrapper">
+          >
+            <div class="wrapper" @click="showLyric = false ">
               <p ref="lyricLine" 
                 class="lyricText" 
                 :class="{'current':currentLineNum==index}"

@@ -42,7 +42,6 @@ export default {
         this.listData = res.data.data[0];
         this.loading = false;
         this.$store.commit('addIntoPlayList',this.listData.songlist)
-        console.log(this.$store.state.playList)
       });
   },
   data() {
@@ -63,6 +62,9 @@ export default {
   methods: {
     musicPlay(index) {
       this.$store.commit("musicPlay",index)
+      if(this.$store.state.songLyric.lines){
+        this.$store.commit("lyricChange")
+      }
     }
   }
 };

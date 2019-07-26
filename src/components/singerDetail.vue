@@ -57,6 +57,9 @@ export default {
   methods: {
     singerMusicPlay(index) {
       this.$store.commit("musicPlay",index)
+      if(this.$store.state.songLyric.lines){
+        this.$store.commit("lyricChange")
+      }
     }
   }
 };

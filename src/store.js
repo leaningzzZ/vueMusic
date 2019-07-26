@@ -10,6 +10,7 @@ export default new Vuex.Store({
     onPlayingMid:"",
     playModel:"list",//random随机播放,list顺序播放,
     isFullScreen:false,//是否全屏（点开播放详情）
+    songLyric:{},//歌词对象
   },
   mutations: {
     //点击歌单时，将歌单加入播放列表
@@ -26,13 +27,13 @@ export default new Vuex.Store({
       }
       //播放歌单歌曲
       if( state.playList[state.onPlayingIndex].mid !="" && state.playList[state.onPlayingIndex].mid !=null){
-        state.onPlayingMid=state.playList[state.onPlayingIndex].mid
+        state.onPlayingMid=state.playList[state.onPlayingIndex].mid;
       }//播放搜索的歌曲
       else if( state.playList[state.onPlayingIndex].songmid != "" && state.playList[state.onPlayingIndex].songmid != null ){
-        state.onPlayingMid=state.playList[state.onPlayingIndex].songmid
+        state.onPlayingMid=state.playList[state.onPlayingIndex].songmid;
       }//播放歌手歌曲
       else if( state.playList[state.onPlayingIndex].musicData.songmid != "" && state.playList[state.onPlayingIndex].musicData.songmid != null){
-        state.onPlayingMid=state.playList[state.onPlayingIndex].musicData.songmid
+        state.onPlayingMid=state.playList[state.onPlayingIndex].musicData.songmid;
       }
       
     },
@@ -45,6 +46,18 @@ export default new Vuex.Store({
         state.onPlayingIndex=state.onPlayingIndex + Math.floor(Math.random()*state.playList.length)//随机加上一个不大于列表中歌曲总数的整数。待验证
       }
       this.commit("musicPlay")
+    },
+    lyricPlay(state){
+      state.songLyric.play()
+    },
+    lyricPause(state){
+      state.songLyric.stop()
+    },
+    lyricChange(state){
+      state.songLyric.togglePlay();
+    },
+    lyricSeek(state){
+      state.songLyric.seek();
     }
   },
   actions:{

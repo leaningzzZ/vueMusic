@@ -45,7 +45,7 @@
         </div>
         <scroll 
           ref="lyricList"
-          :data="songLyric&&songLyric.lines"
+          :data="this.$store.state.songLyric&&this.$store.state.songLyric.lines"
           class="lyric" 
           v-if="showLyric" 
           >
@@ -53,7 +53,7 @@
               <p ref="lyricLine" 
                 class="lyricText" 
                 :class="{'current':currentLineNum==index}"
-                v-for="(line,index) in songLyric.lines" 
+                v-for="(line,index) in this.$store.state.songLyric.lines" 
                 :key="line.time">
                   {{line.txt}}
               </p>
@@ -127,11 +127,11 @@ export default {
     },
     nextMusic() {
       this.$store.commit("nextMusic", 1);
-      this.songLyric.togglePlay()
+      this.$store.commit("lyricChange");
     },
     lastMusic() {
       this.$store.commit("nextMusic", -1);
-      this.songLyric.togglePlay()
+      this.$store.commit("lyricChange");
     },
     getSongUrl(newer) {
       return this.$api.get(`tencent/url?id=${newer}&isRedirect=0`);
@@ -148,31 +148,27 @@ export default {
     musicPause() {
       this.$refs.audio.pause();
       this.isPlaying = false;
-      this.songLyric.stop()
-      console.log(1);
+      this.$store.commit("lyricPause");
     },
     musicPlay() {
       if (this.$store.state.onPlayingMid !== "") {
         this.$refs.audio.play();
-        this.isPlaying = true;
-        this.songLyric.play()
+        this.isPlaying = true; 
+        this.$store.state.songLyric.seek(this.$refs.audio.currentTime*1000)
       }
     },
     oncanPlay() {
-      console.log(this.$refs.audio.duration);
       this.duration = this.$refs.audio.duration;
       this.canPlay = true;
       this.musicPlay();
     },
     handleLyric({lineNum,txt}){
       this.currentLineNum=lineNum;
-      console.log(lineNum)
       if (lineNum > 7 &&this.$refs.lyricList) {
         let lineEl = this.$refs.lyricLine[lineNum - 7];
         this.$refs.lyricList.scrollToElement(lineEl, 1000);
       }if (lineNum <= 7 &&this.$refs.lyricList) {
         this.$refs.lyricList.scrollTo(0, 0, 1000);
-        console.log(this.$refs)
       }
       this.playingLyric = txt;
       
@@ -200,10 +196,7 @@ export default {
               this.songPic = picData.data.data;
               this.songInfo = infoData.data.data[0];
               this.isPlaying = true;
-              this.songLyric = new Lyric(lyricData.data,this.handleLyric);
-              if(this.isPlaying){
-                this.songLyric.play()//调用lyric-parser的方法
-              }
+              this.$store.state.songLyric = new Lyric(lyricData.data,this.handleLyric);
             })
           )
       }

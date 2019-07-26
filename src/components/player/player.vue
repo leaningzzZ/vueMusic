@@ -126,12 +126,12 @@ export default {
       }
     },
     nextMusic() {
-      this.$store.commit("nextMusic", 1);
       this.$store.commit("lyricChange");
+      this.$store.commit("nextMusic", 1);
     },
     lastMusic() {
+            this.$store.commit("lyricChange");
       this.$store.commit("nextMusic", -1);
-      this.$store.commit("lyricChange");
     },
     getSongUrl(newer) {
       return this.$api.get(`tencent/url?id=${newer}&isRedirect=0`);
